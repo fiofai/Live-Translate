@@ -1,12 +1,21 @@
-build:
-  pythonVersion: 3.10
-  command: |
-    apt-get update && \
-    apt-get install -y ffmpeg && \
-    pip install --no-cache-dir -r requirements.txt
+services:
+  - type: web
+    name: live-translate
+    runtime: python
+    pythonVersion: 3.10
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: python web_server.py
+    envVars:
+      - key: PORT
+        value: 10000
 
-preBuild:
-  commands:
-    - git submodule update --init --recursive
+    preBuild:
+      commands:
+        - git submodule update --init --recursive
+        - apt-get update && apt-get install -y ffmpeg
 
-start: python web_server.py
+    buildFilter:
+      paths:
+        - "**/*.py"
+        - requirements.txt
+        - render.yaml
