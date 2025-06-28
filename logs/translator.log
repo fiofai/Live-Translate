@@ -1,0 +1,86 @@
+2025-06-28 04:15:29,935 - WARNING - Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+2025-06-28 04:20:13,112 - INFO - 未设置DeepL API密钥，将跳过DeepL翻译
+2025-06-28 04:20:13,124 - INFO - 未设置Microsoft Translator API密钥，将跳过Microsoft翻译
+2025-06-28 04:20:13,124 - INFO - 已初始化LibreTranslate翻译（最后备用）
+2025-06-28 04:20:13,142 - INFO - 已初始化TTS引擎: edge-tts
+2025-06-28 04:20:21,151 - INFO - Processing audio with duration 00:03.072
+2025-06-28 04:20:37,019 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:20:47,246 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:20:57,323 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:21:07,022 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:21:28,908 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:21:54,699 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:22:32,709 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:23:23,669 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:23:51,553 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:24:09,398 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:24:27,431 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:24:28,568 - WARNING - LibreTranslate翻译失败: Expecting value: line 1 column 1 (char 0)
+2025-06-28 04:24:28,571 - WARNING - 所有翻译服务都失败，使用原文
+2025-06-28 04:24:28,571 - INFO - [zh-CN->en] 原文: 謝謝大家... → 翻译: 謝謝大家... (使用失败-使用原文)
+2025-06-28 04:24:29,900 - WARNING - LibreTranslate翻译失败: Expecting value: line 1 column 1 (char 0)
+2025-06-28 04:24:29,901 - WARNING - 所有翻译服务都失败，使用原文
+2025-06-28 04:24:29,903 - INFO - [zh-CN->vi] 原文: 謝謝大家... → 翻译: 謝謝大家... (使用失败-使用原文)
+2025-06-28 04:24:30,750 - WARNING - LibreTranslate翻译失败: Expecting value: line 1 column 1 (char 0)
+2025-06-28 04:24:30,751 - WARNING - 所有翻译服务都失败，使用原文
+2025-06-28 04:24:30,751 - INFO - [zh-CN->ms] 原文: 謝謝大家... → 翻译: 謝謝大家... (使用失败-使用原文)
+2025-06-28 04:24:31,605 - WARNING - LibreTranslate翻译失败: Expecting value: line 1 column 1 (char 0)
+2025-06-28 04:24:31,606 - WARNING - 所有翻译服务都失败，使用原文
+2025-06-28 04:24:31,606 - INFO - [zh-CN->th] 原文: 謝謝大家... → 翻译: 謝謝大家... (使用失败-使用原文)
+2025-06-28 04:24:32,425 - WARNING - LibreTranslate翻译失败: Expecting value: line 1 column 1 (char 0)
+2025-06-28 04:24:32,429 - WARNING - 所有翻译服务都失败，使用原文
+2025-06-28 04:24:32,431 - INFO - [zh-CN->ko] 原文: 謝謝大家... → 翻译: 謝謝大家... (使用失败-使用原文)
+2025-06-28 04:24:34,566 - ERROR - Edge TTS合成失败: No audio was received. Please verify that your parameters are correct.
+2025-06-28 04:24:35,947 - ERROR - Edge TTS合成失败: No audio was received. Please verify that your parameters are correct.
+2025-06-28 04:24:37,329 - ERROR - Edge TTS合成失败: No audio was received. Please verify that your parameters are correct.
+2025-06-28 04:24:38,633 - ERROR - Edge TTS合成失败: No audio was received. Please verify that your parameters are correct.
+2025-06-28 04:24:50,190 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:24:55,605 - ERROR - Edge TTS合成失败: No audio was received. Please verify that your parameters are correct.
+2025-06-28 04:25:07,794 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:25:25,100 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:25:42,349 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:25:56,508 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:26:19,900 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:26:40,004 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:26:59,646 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:27:20,432 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:27:39,939 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:27:57,751 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:28:14,871 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:28:30,061 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:28:47,805 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:29:05,312 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:29:23,899 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:29:42,553 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:30:04,825 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:30:24,975 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:30:42,053 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:30:58,723 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:31:19,192 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:31:36,107 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:31:51,280 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:32:07,993 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:32:25,642 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:32:40,161 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:32:57,104 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:33:15,935 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:33:32,431 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:33:47,237 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:34:01,877 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:34:20,139 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:34:39,501 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:34:57,213 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:35:15,116 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:35:31,440 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:35:47,453 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:36:07,768 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:36:28,281 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:36:48,065 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:37:07,687 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:37:26,680 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:37:49,987 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:38:11,063 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:38:31,059 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:38:52,294 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:39:12,105 - INFO - Processing audio with duration 00:01.024
+2025-06-28 04:39:20,300 - INFO - 已清理TTS临时目录: C:\Users\yescl\AppData\Local\Temp\live_translator_tts_tvnvbpwf

@@ -1,0 +1,3 @@
+[submodule "clone_modules/voice_cloning"]
+	path = clone_modules/voice_cloning
+	url = https://github.com/CorentinJ/Real-Time-Voice-Cloning.git 

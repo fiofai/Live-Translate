@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: live-translator
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python check_dependencies.py
+    startCommand: gunicorn web_server:app
+    build:
+      aptDependencies:
+        - ffmpeg
+    envVars:
+      - key: RENDER
+        value: "1"
