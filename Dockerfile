@@ -21,7 +21,7 @@ WORKDIR /app
 # 复制并安装依赖
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --prefix=/install -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # 第二阶段：运行时镜像
 FROM python:3.11-slim-bookworm
