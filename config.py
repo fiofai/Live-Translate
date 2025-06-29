@@ -1,9 +1,36 @@
 import os
-from dotenv import load_dotenv
 import logging
+from dotenv import load_dotenv
+from logging.handlers import RotatingFileHandler
+import sys
 
 # 加载.env文件（如果存在）
 load_dotenv()
+
+# 配置日志
+def setup_logging():
+    """设置日志配置"""
+    log_formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s')
+    
+    # 控制台处理器
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(log_formatter)
+    
+    # 文件处理器（可选）
+    file_handler = RotatingFileHandler(
+        'app.log', 
+        maxBytes=10*1024*1024,  # 10MB
+        backupCount=5
+    )
+    file_handler.setFormatter(log_formatter)
+    
+    # 配置根日志记录器
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.addHandler(console_handler)
+    root_logger.addHandler(file_handler)
+    
+    return root_logger
 
 class Config:
     """配置类，用于管理系统配置和环境变量"""
@@ -31,18 +58,20 @@ class Config:
         # 语音识别配置 (Whisper模型大小)
         self.whisper_model = self._get_env("WHISPER_MODEL", default="small")
         
-        # 项目路径配置
-        self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.voice_samples_dir = os.path.join(self.base_dir, "voice_samples")
-        self.voice_embeddings_dir = os.path.join(self.base_dir, "voice_embeddings")
+        # Hugging Face配置
+        self.hf_token = self._get_env("HF_TOKEN", required=True)
+        self.hf_repo = self._get_env("HF_REPO", default="fiofai/voice-profiles")
         
-        # 确保必要的目录存在
-        self._ensure_dirs_exist()
+        # 临时文件目录
+        self.temp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "temp")
+        os.makedirs(self.temp_dir, exist_ok=True)
         
-        # Real-Time-Voice-Cloning模型路径
-        self.encoder_path = os.path.join(self.base_dir, "encoder", "saved_models", "encoder.pt")
-        self.synthesizer_path = os.path.join(self.base_dir, "synthesizer", "saved_models", "synthesizer.pt")
-        self.vocoder_path = os.path.join(self.base_dir, "vocoder", "saved_models", "vocoder.pt")
+        # 模型文件名
+        self.model_files = {
+            "encoder": "encoder.pt",
+            "synthesizer": "synthesizer.pt",
+            "vocoder": "vocoder.pt"
+        }
     
     def _get_env(self, name, default=None, required=True):
         """从环境变量获取配置值"""
@@ -51,22 +80,10 @@ class Config:
             self.logger.warning(f"警告: 环境变量 {name} 未设置")
         return value
     
-    def _ensure_dirs_exist(self):
-        """确保必要的目录存在"""
-        dirs = [
-            self.voice_samples_dir,
-            self.voice_embeddings_dir
-        ]
+    def get_hf_model_path(self, model_type):
+        """获取Hugging Face上的模型路径"""
+        if model_type not in self.model_files:
+            self.logger.error(f"错误: 未知的模型类型 {model_type}")
+            return None
         
-        for dir_path in dirs:
-            if not os.path.exists(dir_path):
-                os.makedirs(dir_path)
-                self.logger.info(f"创建目录: {dir_path}")
-                
-    def get_rtvc_model_paths(self):
-        """获取Real-Time-Voice-Cloning模型路径"""
-        return {
-            "encoder": self.encoder_path,
-            "synthesizer": self.synthesizer_path,
-            "vocoder": self.vocoder_path
-        } 
+        return f"{self.hf_repo}/{self.model_files[model_type]}" 
