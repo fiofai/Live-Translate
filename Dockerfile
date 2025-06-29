@@ -29,7 +29,7 @@ FROM python:3.11-slim-bookworm
 # 安装运行时依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    libssl1.1 \
+    libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # 创建非root用户
