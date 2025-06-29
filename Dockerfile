@@ -21,7 +21,8 @@ WORKDIR /app
 # 复制并安装依赖
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --prefix=/install -r requirements.txt
+    pip install --no-cache-dir --prefix=/install -r requirements.txt && \
+    pip install --no-cache-dir --prefix=/install huggingface_hub qrcode pillow
 
 # 第二阶段：运行时镜像
 FROM python:3.11-slim-bookworm
@@ -30,6 +31,7 @@ FROM python:3.11-slim-bookworm
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libssl-dev \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # 创建非root用户
@@ -42,17 +44,8 @@ COPY --from=builder /install /usr/local
 # 复制应用代码
 COPY . /app/
 
-# 创建必要的目录结构
-RUN mkdir -p /app/encoder/saved_models \
-    /app/synthesizer/saved_models \
-    /app/vocoder/saved_models \
-    /app/voice_samples \
-    /app/voice_embeddings \
-    && touch /app/encoder/saved_models/.gitkeep \
-    /app/synthesizer/saved_models/.gitkeep \
-    /app/vocoder/saved_models/.gitkeep \
-    /app/voice_samples/.gitkeep \
-    /app/voice_embeddings/.gitkeep
+# 创建临时目录
+RUN mkdir -p /app/temp
 
 # 设置环境变量
 ENV PYTHONUNBUFFERED=1
