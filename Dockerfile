@@ -36,16 +36,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # 创建非root用户
 RUN useradd -m appuser
-WORKDIR /app
-USER appuser
 
 # 从构建阶段复制安装的Python包
 COPY --from=builder /install /usr/local
+
+# 设置工作目录
+WORKDIR /app
+
 # 复制应用代码
 COPY . /app/
 
+# 切换到root用户以设置权限
+USER root
+
+# 授权确保有写入权限
+RUN chmod -R 755 /app
+
 # 创建临时目录
 RUN mkdir -p /app/temp
+
+# 更改临时目录的所有权
+RUN chown -R appuser:appuser /app/temp
+
+# 切换回非root用户
+USER appuser
 
 # 设置环境变量
 ENV PYTHONUNBUFFERED=1
