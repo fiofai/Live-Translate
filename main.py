@@ -12,14 +12,12 @@ from translator import TranslationManager
 from voice_clone_module import VoiceCloneManager
 from tts_engine import TTSEngine
 from streamer import LiveKitStreamer
-from config import Config
+from config import Config, setup_logging
 
 # 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logger = setup_logging()
 logger = logging.getLogger("main")
+logger.info("初始化实时语音翻译系统...")
 
 # 创建FastAPI应用
 app = FastAPI(title="实时语音翻译系统")
@@ -208,4 +206,5 @@ app.include_router(web_router)
 # 主入口点
 if __name__ == "__main__":
     import uvicorn
+    logger.info("启动FastAPI服务器...")
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True) 
