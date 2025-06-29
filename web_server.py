@@ -10,6 +10,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import aiofiles
 import soundfile as sf
+import tempfile
+from huggingface_hub import HfApi
 
 # 导入配置和其他模块
 from config import Config
@@ -34,6 +36,9 @@ livekit_streamer = LiveKitStreamer(
     config.livekit_api_key,
     config.livekit_api_secret
 )
+
+# Hugging Face API
+hf_api = HfApi(token=config.hf_token)
 
 # 挂载静态文件
 def mount_static_files(app):
@@ -71,28 +76,53 @@ async def get_connection_info():
 # 上传语音样本
 @router.post("/upload_voice_sample")
 async def upload_voice_sample(audio_file: UploadFile = File(...)):
-    """上传语音样本"""
+    """上传语音样本到Hugging Face Hub"""
     try:
         # 生成唯一ID
         speaker_id = str(uuid.uuid4())
         
-        # 确保目录存在
-        os.makedirs(config.voice_samples_dir, exist_ok=True)
-        
-        # 保存文件路径
-        sample_path = os.path.join(config.voice_samples_dir, f"{speaker_id}.wav")
-        
-        # 保存上传的文件
-        async with aiofiles.open(sample_path, "wb") as out_file:
-            content = await audio_file.read()
-            await out_file.write(content)
+        # 创建临时文件
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
+            temp_path = temp_file.name
             
-        logger.info(f"已保存语音样本: {sample_path}")
+            # 保存上传的文件
+            content = await audio_file.read()
+            with open(temp_path, "wb") as f:
+                f.write(content)
+                
+        logger.info(f"已保存语音样本到临时文件: {temp_path}")
         
-        # 异步处理语音样本
-        asyncio.create_task(voice_clone_manager.process_voice_sample(sample_path, speaker_id))
-        
-        return JSONResponse(content={"speaker_id": speaker_id, "status": "processing"})
+        # 上传到Hugging Face Hub
+        try:
+            # 确保目录存在
+            sample_path = f"voice_samples/{speaker_id}.wav"
+            
+            # 上传文件
+            hf_api.upload_file(
+                path_or_fileobj=temp_path,
+                path_in_repo=sample_path,
+                repo_id=config.hf_repo,
+                repo_type="dataset"
+            )
+            
+            logger.info(f"已上传语音样本到Hugging Face Hub: {sample_path}")
+            
+            # 异步处理语音样本
+            asyncio.create_task(voice_clone_manager.process_voice_sample(temp_path, speaker_id))
+            
+            # 删除临时文件
+            os.unlink(temp_path)
+            
+            return JSONResponse(content={"speaker_id": speaker_id, "status": "processing"})
+            
+        except Exception as e:
+            logger.error(f"上传语音样本到Hugging Face Hub失败: {str(e)}")
+            # 删除临时文件
+            try:
+                os.unlink(temp_path)
+            except:
+                pass
+            raise HTTPException(status_code=500, detail=f"上传到Hugging Face Hub失败: {str(e)}")
         
     except Exception as e:
         logger.error(f"上传语音样本时出错: {str(e)}")
@@ -116,8 +146,13 @@ async def set_active_speaker(lang_code: str = Form(...), speaker_id: str = Form(
     """设置语言的活跃说话人"""
     try:
         # 检查说话人是否存在
-        embedding_path = os.path.join(config.voice_embeddings_dir, f"{speaker_id}.npy")
-        if not os.path.exists(embedding_path):
+        try:
+            # 尝试从Hugging Face Hub下载嵌入向量
+            embedding_path = await voice_clone_manager._download_voice_embedding(speaker_id)
+            if not embedding_path:
+                raise HTTPException(status_code=404, detail=f"说话人{speaker_id}不存在")
+        except Exception as e:
+            logger.error(f"检查说话人时出错: {str(e)}")
             raise HTTPException(status_code=404, detail=f"说话人{speaker_id}不存在")
             
         # 设置活跃说话人
